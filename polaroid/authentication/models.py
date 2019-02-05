@@ -1,8 +1,12 @@
-from django.db. import models
-import django.contrib.auth.models import (BaseUserManager, AbstractBaseUser, PermissionsMixin, TimestampedModel,)
+from django.db import models
+from django.contrib.auth.models import (
+    BaseUserManager,
+    AbstractBaseUser,
+    PermissionsMixin,
+)
+
 
 class UserManager(BaseUserManager):
-
     def create_user(self, username, email, password=None):
         """
         Creates and saves user with given usernames, email, password
@@ -33,13 +37,13 @@ class UserManager(BaseUserManager):
         return user
 
 
-class User(AbstractBaseUser, PermissionsMixin, TimestampedModel):
+class User(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(db_index=True, max_length=255, unique=True)
     email = models.EmailField(db_index=True, unique=True)
-    is_active = models.Boolean(default=False)
-    is_staff = models.Boolean(default=False)
+    is_active = models.BooleanField(default=False)
+    is_staff = models.BooleanField(default=False)
 
-    USERNAME = 'email'
+    USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
 
     def __str__(self):
