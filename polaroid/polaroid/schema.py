@@ -6,4 +6,8 @@ class Query(authentication.schema.Query):
     pass
 
 
-schema = graphene.Schema(query=Query)
+class Mutation(authentication.schema.Mutation):
+    pass
+
+
+schema = graphene.Schema(query=Query, mutation=Mutation)
