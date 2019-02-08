@@ -27,9 +27,9 @@ class UserCreate(graphene.relay.ClientIDMutation):
 
     @classmethod
     def mutate_and_get_payload(cls, root, info, **input):
-        user = User.objects.create(**input)
-        new_user = user
-        return cls(new_user=new_user)
+        user = User.objects.create_user(**input)
+        user.save
+        return cls(new_user=user)
 
 
 class Query(graphene.ObjectType):

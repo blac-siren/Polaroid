@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.validators import validate_email
 from django.contrib.auth.models import (
     BaseUserManager,
     AbstractBaseUser,
@@ -18,6 +19,7 @@ class UserManager(BaseUserManager):
             raise ValueError("User must have an email address")
 
         email = self.normalize_email(email)
+        validate_email(email)
         username = self.model.normalize_username(username)
         user = self.model(username=username, email=email)
         user.set_password(password)
@@ -37,11 +39,15 @@ class UserManager(BaseUserManager):
         return user
 
 
-class User(AbstractBaseUser, PermissionsMixin):
+
+class User(AbstractBaseUser, PermissionsMixin, UserManager):
     username = models.CharField(db_index=True, max_length=255, unique=True)
     email = models.EmailField(db_index=True, unique=True)
+
     is_active = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
+
+    objects = UserManager()
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
