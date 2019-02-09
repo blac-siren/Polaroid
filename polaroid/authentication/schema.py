@@ -1,4 +1,5 @@
 import graphene
+from graphql import GraphQLError
 from graphene_django.types import DjangoObjectType
 from .models import User
 
@@ -12,13 +13,16 @@ class CreateUser(graphene.Mutation):
     user = graphene.Field(UserType)
 
     class Arguments:
-        username = graphene.String(required=True)
+        username = graphene.String(required=True, )
         email = graphene.String(required=True)
         password = graphene.String(required=True)
 
     def mutate(self, info, **kwargs):
+        if username not in kwargs:
+            raise GraphQLError('User must have username')
         new_user = User.objects.create_user(**kwargs)
         return CreateUser(user=new_user)
+
 
 class Query(graphene.ObjectType):
 
