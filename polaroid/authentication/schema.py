@@ -22,9 +22,10 @@ class CreateUser(graphene.Mutation):
 
     def mutate(self, info, **kwargs):
         new_user = User.objects.create_user(**kwargs)
-        user = new_user.authenticate(email=kwargs.get('email'), password=kwargs.get('password'))
-        if user is None:
-            raise ValueError("Invalid....")
+        # user = new_user.authenticate(email=kwargs.get('email'), password=kwargs.get('password'))
+        # print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+        # if user is None:
+        #     raise ValueError("Invalid....")
         return CreateUser(user=new_user)
 
 
