@@ -1,8 +1,11 @@
 import graphene
+import graphql_jwt
 from graphql import GraphQLError
 from graphene_django.types import DjangoObjectType
+# from django.contrib.auth.models import User
 from .models import User
 
+from django.contrib.auth import authenticate
 
 class UserType(DjangoObjectType):
     class Meta:
@@ -18,9 +21,10 @@ class CreateUser(graphene.Mutation):
         password = graphene.String(required=True)
 
     def mutate(self, info, **kwargs):
-        if username not in kwargs:
-            raise GraphQLError('User must have username')
         new_user = User.objects.create_user(**kwargs)
+        user = new_user.authenticate(email=kwargs.get('email'), password=kwargs.get('password'))
+        if user is None:
+            raise ValueError("Invalid....")
         return CreateUser(user=new_user)
 
 
@@ -33,4 +37,7 @@ class Query(graphene.ObjectType):
 
 
 class Mutation(graphene.ObjectType):
+    token_auth = graphql_jwt.ObtainJSONWebToken.Field()
+    verify_token = graphql_jwt.Verify.Field()
+    refresh_token = graphql_jwt.Refresh.Field()
     create_user = CreateUser.Field()

@@ -6,6 +6,7 @@ from django.contrib.auth.models import (
     AbstractBaseUser,
     PermissionsMixin,
 )
+from django.contrib.auth.models import User
 
 
 class UserManager(BaseUserManager):
@@ -24,9 +25,27 @@ class UserManager(BaseUserManager):
         username = self.model.normalize_username(username)
         user = self.model(username=username, email=email)
         user.set_password(password)
+
         user.save()
 
         return user
+
+    def authenticate(self, email=None, password=None):
+        print(email)
+
+        user = User.objects.get(email=email)
+        print(user)
+
+        if not user:
+            return None
+        return user
+
+    def get_user(self, user_id):
+        try:
+            return User.objects.get(pk=user_id)
+        except User.DoesNotExist:
+            return None
+
 
     def create_superuser(self, username, email, password):
         if password is None:
@@ -38,6 +57,7 @@ class UserManager(BaseUserManager):
         user.save()
 
         return user
+
 
 
 class User(AbstractBaseUser, TimestampedModel, PermissionsMixin, UserManager):
