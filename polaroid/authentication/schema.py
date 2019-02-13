@@ -39,7 +39,8 @@ class UserLogin(graphene.Mutation):
         email = kwargs.get('email')
         password = kwargs.get('password')
 
-        user= authenticate(request=info.context, email=email, password=password)
+        user = authenticate(
+            request=info.context, email=email, password=password)
         return UserLogin(user=user)
 
 
