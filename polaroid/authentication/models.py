@@ -30,33 +30,17 @@ class UserManager(BaseUserManager):
 
         return user
 
-    # def authenticate(self, email=None, password=None):
-    #     print(email)
-
-    #     user = User.objects.get(email=email)
-    #     print(user)
-
-    #     if not user:
-    #         return None
-    #     return user
-
-    # def get_user(self, user_id):
-    #     try:
-    #         return User.objects.get(pk=user_id)
-    #     except User.DoesNotExist:
-    #         return None
-
     def authenticate(self, request, username=None, password=None, **kwargs):
         if username is None:
             username = kwargs.get(User.USERNAME_FIELD)
         try:
             user = User._default_manager.get_by_natural_key(username)
+            print(user)
         except User.DoesNotExist:
             User.set_password(password)
         else:
             if user.check_password(password):
                 return user
-
 
     def create_superuser(self, username, email, password):
         if password is None:
@@ -70,7 +54,6 @@ class UserManager(BaseUserManager):
         return user
 
 
-
 class User(AbstractBaseUser, TimestampedModel, PermissionsMixin, UserManager):
     username = models.CharField(db_index=True, max_length=255, unique=True)
     email = models.EmailField(db_index=True, unique=True)
@@ -80,8 +63,8 @@ class User(AbstractBaseUser, TimestampedModel, PermissionsMixin, UserManager):
 
     objects = UserManager()
 
-    USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = ['email']
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['username']
 
     def __str__(self):
         return self.email
