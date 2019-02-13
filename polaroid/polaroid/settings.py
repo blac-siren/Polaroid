@@ -128,7 +128,6 @@ STATIC_URL = '/static/'
 AUTH_USER_MODEL = 'authentication.User'
 
 AUTHENTICATION_BACKENDS = [
-    'graphql_jwt.backends.JSONWebTokenBackend',
     'authentication.models.User',
 ]
 

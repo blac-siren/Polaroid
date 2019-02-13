@@ -7,6 +7,7 @@ from django.contrib.auth.models import (
     PermissionsMixin,
 )
 from django.contrib.auth.models import User
+from rest_framework.exceptions import AuthenticationFailed
 
 
 class UserManager(BaseUserManager):
@@ -35,12 +36,12 @@ class UserManager(BaseUserManager):
             username = kwargs.get(User.USERNAME_FIELD)
         try:
             user = User._default_manager.get_by_natural_key(username)
-            print(user)
         except User.DoesNotExist:
-            User.set_password(password)
+            raise AuthenticationFailed
         else:
             if user.check_password(password):
                 return user
+            raise AuthenticationFailed
 
     def create_superuser(self, username, email, password):
         if password is None:
