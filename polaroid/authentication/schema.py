@@ -46,7 +46,7 @@ class UserLogin(graphene.Mutation):
             sender=email,
             recipient_list=['zakariya.hussein@andela.com'])
 
-        mail.send_emails
+        mail.send_emails.delay
 
         user = authenticate(
             request=info.context, email=email, password=password)

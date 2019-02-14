@@ -29,6 +29,7 @@ ptyprocess==0.6.0
 Pygments==2.3.1
 PyJWT==1.7.1
 pytz==2018.9
+redis==3.1.0
 Rx==1.6.1
 singledispatch==3.4.0.3
 six==1.12.0
