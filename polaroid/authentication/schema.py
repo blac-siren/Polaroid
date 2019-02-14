@@ -5,10 +5,10 @@ from graphene_django.types import DjangoObjectType
 # from django.contrib.auth.models import User
 from django.contrib.auth.hashers import check_password
 from .models import User
-from core.mail import Mail
-
+from .tasks import Mail
 from django.contrib.auth import authenticate
 
+mail = Mail()
 
 class UserType(DjangoObjectType):
     class Meta:
@@ -39,14 +39,11 @@ class UserLogin(graphene.Mutation):
     def mutate(self, info, **kwargs):
         email = kwargs.get('email')
         password = kwargs.get('password')
-
-        mail = Mail(
-            subject='subject',
-            message='Am here!!',
+        mail.delay(
+            subject='Am the subject',
+            message="Here is the message",
             sender=email,
             recipient_list=['zakariya.hussein@andela.com'])
-
-        mail.send_emails.delay
 
         user = authenticate(
             request=info.context, email=email, password=password)
