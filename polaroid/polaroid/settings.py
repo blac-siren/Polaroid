@@ -131,14 +131,14 @@ AUTHENTICATION_BACKENDS = [
     'authentication.models.User',
 ]
 
+env = os.environ
+
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-
 EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_HOST_USER = "zac.husnein@gmail.com"
-EMAIL_HOST_PASSWORD = 'Z0mbie@home'
-
+EMAIL_HOST = env.get('HOST')
+EMAIL_PORT = env.get('PORT')
+EMAIL_HOST_USER = env.get('USER')
+EMAIL_HOST_PASSWORD = env.get('PASSWORD')
 
 
 BROKER_URL = 'redis://localhost:6379'
