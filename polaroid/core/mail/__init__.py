@@ -11,7 +11,7 @@ class Mail:
         self.sender = sender
         self.recipient_list = recipient_list
 
-    @app.task(name='sendemails')
+    @app.task
     def send_emails(self):
         send_mail(
                 subject=self.subject,
@@ -19,3 +19,6 @@ class Mail:
                 from_email=self.sender,
                 recipient_list=self.recipient_list,
                 fail_silently=False)
+        logging.warning(
+            "Tried to send verification email to non-existing user '%s'" %
+            self.recipient)

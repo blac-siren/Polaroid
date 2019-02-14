@@ -137,7 +137,7 @@ EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = "zac.husnein@gmail.com"
-EMAIL_HOST_PASSWORD = "Z0mbie@home"
+# EMAIL_HOST_PASSWORD = "Z0mbie@home"
 
 
 BROKER_URL = 'redis://localhost:6379'
